@@ -96,9 +96,8 @@ frappe.ui.form.on('Student Group', {
 					args: {
 						'academic_term': frm.doc.academic_term,
 						'group_based_on': frm.doc.group_based_on,
-						'program': frm.doc.programs,
-						'stream' : frm.doc.stream,
-						'program_and_stream':frm.doc.program_and_stream
+						'program_and_stream':frm.doc.program_and_stream,
+						'campus':frm.doc.campus
 					},
 					callback: function(r) {
 						if (r.message) {

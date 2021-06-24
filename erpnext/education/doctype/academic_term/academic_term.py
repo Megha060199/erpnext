@@ -17,8 +17,7 @@ class AcademicTerm(Document):
         # self.title = self.academic_year + " ({})".format(self.term_name) if self.term_name else ""
 
         #Check that start of academic year is earlier than end of academic year
-        if self.term_start_date and self.term_end_date \
-				and getdate(self.term_start_date) > getdate(self.term_end_date):
+        if self.term_start_date and self.term_end_date and getdate(self.term_start_date) > getdate(self.term_end_date):
             frappe.throw(_("The Term End Date cannot be earlier than the Term Start Date. Please correct the dates and try again."))
 
         # Check that the start of the term is not before the start of the academic year 

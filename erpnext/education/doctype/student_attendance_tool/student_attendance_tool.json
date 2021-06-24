@@ -8,7 +8,6 @@
  "field_order": [
   "based_on",
   "group_based_on",
-  "column_break_2",
   "student_group",
   "academic_year",
   "academic_term",
@@ -19,48 +18,42 @@
  ],
  "fields": [
   {
+   "default": "Lecture",
    "fieldname": "based_on",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Based On",
-   "options": "Student Group\nSchedule Subject Lecture"
+   "options": "Lecture",
+   "read_only": 1
   },
   {
    "default": "Batch",
-   "depends_on": "eval:doc.based_on == \"Student Group\"",
    "fieldname": "group_based_on",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Group Based On",
    "options": "Batch\nCourse\nActivity"
   },
   {
-   "fieldname": "column_break_2",
-   "fieldtype": "Column Break"
-  },
-  {
-   "depends_on": "eval:doc.based_on ==\"Student Group\"",
    "fieldname": "student_group",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_list_view": 1,
    "label": "Student Group",
-   "options": "Student Group",
-   "reqd": 1
+   "options": "Student Group"
   },
   {
-   "depends_on": "eval:doc.based_on ==\"Course Schedule\"",
    "fieldname": "course_schedule",
    "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Course Schedule",
+   "label": "Lecture",
    "options": "Schedule Subject Lecture",
    "reqd": 1
   },
   {
-   "depends_on": "eval:doc.based_on ==\"Student Group\"",
    "fieldname": "date",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Date",
-   "reqd": 1
+   "label": "Date"
   },
   {
    "depends_on": "eval: (doc.course_schedule \n|| (doc.student_group && doc.date))",
@@ -93,7 +86,7 @@
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-06-12 23:03:09.482928",
+ "modified": "2021-06-15 19:47:08.790751",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Attendance Tool",

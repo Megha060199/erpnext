@@ -19,7 +19,7 @@ class StudentAttendance(Document):
 		self.set_student_group()
 		self.validate_student()
 		self.validate_duplication()
-		self.validate_is_holiday()
+		# self.validate_is_holiday()
 
 	def set_date(self):
 		if self.course_schedule:

@@ -2,7 +2,7 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "format : {academic_year} - {term_name}",
+ "autoname": "format:{academic_year}-{term_name}",
  "creation": "2015-09-08 17:19:19.158228",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -55,7 +55,7 @@
   }
  ],
  "links": [],
- "modified": "2021-06-10 17:57:55.246696",
+ "modified": "2021-06-18 18:48:34.835829",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Academic Term",

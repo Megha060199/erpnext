@@ -11,7 +11,7 @@ class ScheduleSubjectLecture(Document):
 	def validate(self):
 		self.instructor_name = frappe.db.get_value("Instructor", self.instructor, "instructor_name")
 		self.set_title()
-		self.validate_course()
+		# self.validate_course()
 		self.validate_date()
 		self.validate_overlap()
 	

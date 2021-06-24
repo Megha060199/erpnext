@@ -9,7 +9,7 @@ from frappe import _
 from frappe.model.mapper import get_mapped_doc
 from frappe.utils import flt, cstr, getdate
 from frappe.email.doctype.email_group.email_group import add_subscribers
-
+from datetime import datetime
 def get_course(program):
 	'''Return list of courses for a particular program
 	:param program: Program
@@ -58,7 +58,7 @@ def check_attendance_records_exist(course_schedule=None, student_group=None, dat
 
 
 @frappe.whitelist()
-def mark_attendance(students_present, students_absent, course_schedule=None, student_group=None, date=None):
+def mark_attendance(students_present, students_absent, student_group=None,course_schedule=None, date=None):
 	"""Creates Multiple Attendance Records.
 
 	:param students_present: Students Present JSON.
@@ -69,11 +69,11 @@ def mark_attendance(students_present, students_absent, course_schedule=None, stu
 	"""
 
 	if student_group:
-		academic_year = frappe.db.get_value('Student Group', student_group, 'academic_year')
-		if academic_year:
-			year_start_date, year_end_date = frappe.db.get_value('Academic Year', academic_year, ['year_start_date', 'year_end_date'])
-			if getdate(date) < getdate(year_start_date) or getdate(date) > getdate(year_end_date):
-				frappe.throw(_('Attendance cannot be marked outside of Academic Year {0}').format(academic_year))
+		academic_term = frappe.db.get_value('Student Group', student_group, 'academic_term')
+		if academic_term:
+			term_start_date, term_end_date = frappe.db.get_value('Academic Term', academic_term, ['term_start_date', 'term_end_date'])
+			if getdate(date) < getdate(term_start_date) or getdate(date) > getdate(term_end_date):
+				frappe.throw(_('Attendance cannot be marked outside of Academic Term {0}').format(academic_term))
 
 	present = json.loads(students_present)
 	absent = json.loads(students_absent)
@@ -102,14 +102,15 @@ def make_attendance_records(student, student_name, status, course_schedule=None,
 		"course_schedule": course_schedule,
 		"student_group": student_group,
 		"date": date
-	})
+	})	
+	print(type(student_attendance.date),'attendance	-doc')
 	if not student_attendance:
 		student_attendance = frappe.new_doc("Student Attendance")
 	student_attendance.student = student
 	student_attendance.student_name = student_name
 	student_attendance.course_schedule = course_schedule
 	student_attendance.student_group = student_group
-	student_attendance.date = date
+	student_attendance.date = datetime.strptime(date, '%Y-%m-%d').date()
 	student_attendance.status = status
 	student_attendance.save()
 	student_attendance.submit()

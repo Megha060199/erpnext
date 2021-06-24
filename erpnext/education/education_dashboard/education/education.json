@@ -7,9 +7,6 @@
    "card": "Total Instructors"
   },
   {
-   "card": "Program Enrollments"
-  },
-  {
    "card": "Student Applicants to Review"
   }
  ],
@@ -54,7 +51,7 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2020-08-05 16:22:17.428101",
+ "modified": "2021-06-24 11:13:20.714338",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Education",

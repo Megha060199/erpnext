@@ -62,6 +62,7 @@ frappe.ui.form.on('Student Attendance Tool', {
 	},
 
 	get_students: function(frm, students) {
+		console.log(students,'st-ar')
 		if (!frm.students_area) {
 			frm.students_area = $('<div>')
 				.appendTo(frm.fields_dict.students_html.wrapper);
@@ -120,7 +121,7 @@ education.StudentsEditor = class StudentsEditor {
 					var $check = $(check);
 					studs.push({
 						student: $check.data().student,
-						student_name: $check.data().studentName,
+						student_name: $check.data().student,
 						group_roll_number: $check.data().group_roll_number,
 						disabled: $check.prop("disabled"),
 						checked: $check.is(":checked")
@@ -146,7 +147,7 @@ education.StudentsEditor = class StudentsEditor {
 								args: {
 									"students_present": students_present,
 									"students_absent": students_absent,
-									"student_group": frm.doc.student_group,
+									"student_group": students[0].parent,
 									"course_schedule": frm.doc.course_schedule,
 									"date": frm.doc.date
 								},
@@ -166,7 +167,7 @@ education.StudentsEditor = class StudentsEditor {
 		var htmls = students.map(function(student) {
 			return frappe.render_template("student_button", {
 				student: student.student,
-				student_name: student.student_name,
+				student_name: student.student,
 				group_roll_number: student.group_roll_number,
 				status: student.status
 			})

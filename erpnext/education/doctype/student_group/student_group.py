@@ -37,7 +37,7 @@ class StudentGroup(Document):
 
 
 @frappe.whitelist()
-def get_students(academic_term, group_based_on, program=None, stream=None, program_and_stream=None):
+def get_students(academic_term, group_based_on, program_and_stream=None,campus=None):
 	students_already_alloted_batch = frappe.get_all('Student Group Student',fields=['student','student_phone_number','student_email_id'])
 	students_not_given_batch = []
 	if group_based_on == 'Program & Stream' and program_and_stream:
@@ -51,7 +51,8 @@ def get_students(academic_term, group_based_on, program=None, stream=None, progr
 		st.enrolled_course = %(program_and_stream)s
 		AND st.status = 'Active'
 		AND st.current_academic_term = %(academic_term)s
-		""",{'program_and_stream':program_and_stream,'academic_term':academic_term},as_dict=True)
+		AND st.campus = %(campus)s
+		""",{'program_and_stream':program_and_stream,'academic_term':academic_term,'campus':campus},as_dict=True)
 
 
 	# if group_based_on == 'Program' and program :
