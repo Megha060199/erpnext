@@ -9,7 +9,7 @@ from frappe import _
 from erpnext.education.utils import validate_duplicate_student
 from frappe.utils import cint
 
-class StudentGroup(Document):
+class StudentBatch(Document):
 	def validate(self):
 		self.validate_mandatory_fields()
 		self.validate_strength()

@@ -33,7 +33,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "json": "{}",
- "modified": "2021-06-24 13:48:01.910117",
+ "modified": "2021-06-27 15:49:56.282203",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Generate TimeTable",
@@ -47,6 +47,9 @@
  "roles": [
   {
    "role": "Academics User"
+  },
+  {
+   "role": "Instructor"
   }
  ]
 }

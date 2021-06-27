@@ -59,7 +59,7 @@
    "in_global_search": 1,
    "in_standard_filter": 1,
    "label": "Student Group",
-   "options": "Student Group"
+   "options": "Student Batch"
   },
   {
    "default": "Present",
@@ -97,7 +97,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-06-18 21:09:35.547393",
+ "modified": "2021-06-27 15:52:10.277900",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Attendance",

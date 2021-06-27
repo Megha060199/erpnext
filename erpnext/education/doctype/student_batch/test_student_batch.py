@@ -10,7 +10,7 @@ import erpnext.education
 def get_random_group():
 	doc = frappe.get_doc({
 		"doctype": "Student Group",
-		"student_group_name": "_Test Student Group-" + frappe.generate_hash(length=5),
+		"student_batch_name": "_Test Student Group-" + frappe.generate_hash(length=5),
 		"group_based_on": "Activity"
 	}).insert()
 
@@ -21,7 +21,7 @@ def get_random_group():
 
 	return doc
 
-class TestStudentGroup(unittest.TestCase):
+class TestStudentBatch(unittest.TestCase):
 	def test_student_roll_no(self):
 		doc = get_random_group()
 		self.assertEqual(max([d.group_roll_number for d in doc.students]), len(doc.students))

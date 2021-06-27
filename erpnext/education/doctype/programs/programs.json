@@ -37,12 +37,34 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-06-27 11:27:17.191749",
+ "modified": "2021-06-27 15:55:51.498943",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Programs",
  "owner": "Administrator",
  "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academics User",
+   "share": 1,
+   "write": 1
+  },
   {
    "create": 1,
    "delete": 1,
@@ -51,7 +73,7 @@
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "System Manager",
+   "role": "Administrator",
    "share": 1,
    "write": 1
   }
