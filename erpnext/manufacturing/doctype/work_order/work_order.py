@@ -1,7 +1,6 @@
-# Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
+# Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
-from __future__ import unicode_literals
 import frappe
 import json
 import math
@@ -28,9 +27,6 @@ class ItemHasVariantError(frappe.ValidationError): pass
 
 from six import string_types
 
-form_grid_templates = {
-	"operations": "templates/form_grid/work_order_grid.html"
-}
 
 class WorkOrder(Document):
 	def onload(self):
@@ -240,8 +236,12 @@ class WorkOrder(Document):
 			frappe.throw(_("Work-in-Progress Warehouse is required before Submit"))
 		if not self.fg_warehouse:
 			frappe.throw(_("For Warehouse is required before Submit"))
+		
+		if self.production_plan and frappe.db.exists('Production Plan Item Reference',{'parent':self.production_plan}):
+			self.update_work_order_qty_in_combined_so()
+		else:
+			self.update_work_order_qty_in_so()
 
-		self.update_work_order_qty_in_so()
 		self.update_reserved_qty_for_production()
 		self.update_completed_qty_in_material_request()
 		self.update_planned_qty()
@@ -250,9 +250,13 @@ class WorkOrder(Document):
 
 	def on_cancel(self):
 		self.validate_cancel()
-
 		frappe.db.set(self,'status', 'Cancelled')
-		self.update_work_order_qty_in_so()
+
+		if self.production_plan and frappe.db.exists('Production Plan Item Reference',{'parent':self.production_plan}):
+			self.update_work_order_qty_in_combined_so()
+		else:
+			self.update_work_order_qty_in_so()
+			
 		self.delete_job_card()
 		self.update_completed_qty_in_material_request()
 		self.update_planned_qty()
@@ -357,53 +361,75 @@ class WorkOrder(Document):
 		work_order_qty = qty[0][0] if qty and qty[0][0] else 0
 		frappe.db.set_value('Sales Order Item',
 			self.sales_order_item, 'work_order_qty', flt(work_order_qty/total_bundle_qty, 2))
+		
+	def update_work_order_qty_in_combined_so(self):
+		total_bundle_qty = 1
+		if self.product_bundle_item:
+			total_bundle_qty = frappe.db.sql(""" select sum(qty) from
+				`tabProduct Bundle Item` where parent = %s""", (frappe.db.escape(self.product_bundle_item)))[0][0]
 
+			if not total_bundle_qty:
+				# product bundle is 0 (product bundle allows 0 qty for items)
+				total_bundle_qty = 1
+
+		prod_plan = frappe.get_doc('Production Plan', self.production_plan)
+		item_reference = frappe.get_value('Production Plan Item', self.production_plan_item, 'sales_order_item')
+		
+		for plan_reference in prod_plan.prod_plan_references:
+			work_order_qty = 0.0
+			if plan_reference.item_reference == item_reference:
+				if self.docstatus == 1:
+					work_order_qty = flt(plan_reference.qty) / total_bundle_qty
+				frappe.db.set_value('Sales Order Item',
+					plan_reference.sales_order_item, 'work_order_qty', work_order_qty)
+	
 	def update_completed_qty_in_material_request(self):
 		if self.material_request:
 			frappe.get_doc("Material Request", self.material_request).update_completed_qty([self.material_request_item])
 
 	def set_work_order_operations(self):
 		"""Fetch operations from BOM and set in 'Work Order'"""
-		self.set('operations', [])
 
+		def _get_operations(bom_no, qty=1):
+			return frappe.db.sql(
+					f"""select
+						operation, description, workstation, idx,
+						base_hour_rate as hour_rate, time_in_mins * {qty} as time_in_mins,
+						"Pending" as status, parent as bom, batch_size, sequence_id
+					from
+						`tabBOM Operation`
+					where
+						parent = %s order by idx
+					""", bom_no, as_dict=1)
+
+
+		self.set('operations', [])
 		if not self.bom_no:
 			return
 
-		if self.use_multi_level_bom:
-			bom_list = frappe.get_doc("BOM", self.bom_no).traverse_tree()
+		operations = []
+		if not self.use_multi_level_bom:
+			bom_qty = frappe.db.get_value("BOM", self.bom_no, "quantity")
+			operations.extend(_get_operations(self.bom_no, qty=1.0/bom_qty))
 		else:
-			bom_list = [self.bom_no]
+			bom_tree = frappe.get_doc("BOM", self.bom_no).get_tree_representation()
+			bom_traversal = list(reversed(bom_tree.level_order_traversal()))
+			bom_traversal.append(bom_tree) # add operation on top level item last
 
-		operations = frappe.db.sql("""
-			select
-				operation, description, workstation, idx,
-				base_hour_rate as hour_rate, time_in_mins,
-				"Pending" as status, parent as bom, batch_size, sequence_id
-			from
-				`tabBOM Operation`
-			where
-				 parent in (%s) order by idx
-		"""	% ", ".join(["%s"]*len(bom_list)), tuple(bom_list), as_dict=1)
+			for d in bom_traversal:
+				if d.is_bom:
+					operations.extend(_get_operations(d.name, qty=d.exploded_qty))
+
+			for correct_index, operation in enumerate(operations, start=1):
+				operation.idx = correct_index
+
 
 		self.set('operations', operations)
-
-		if self.use_multi_level_bom and self.get('operations') and self.get('items'):
-			raw_material_operations = [d.operation for d in self.get('items')]
-			operations = [d.operation for d in self.get('operations')]
-
-			for operation in raw_material_operations:
-				if operation not in operations:
-					self.append('operations', {
-						'operation': operation
-					})
-
 		self.calculate_time()
 
 	def calculate_time(self):
-		bom_qty = frappe.db.get_value("BOM", self.bom_no, "quantity")
-
 		for d in self.get("operations"):
-			d.time_in_mins = flt(d.time_in_mins) / flt(bom_qty) * (flt(self.qty) / flt(d.batch_size))
+			d.time_in_mins = flt(d.time_in_mins) * (flt(self.qty) / flt(d.batch_size))
 
 		self.calculate_operating_cost()
 
