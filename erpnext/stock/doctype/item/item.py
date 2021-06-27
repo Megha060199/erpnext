@@ -16,7 +16,7 @@ from frappe.utils.html_utils import clean_html
 from frappe.website.doctype.website_slideshow.website_slideshow import \
 	get_slideshow
 
-from frappe.website.utils import clear_cache
+#from frappe.website.render import clear_cache
 from frappe.website.website_generator import WebsiteGenerator
 
 
@@ -641,7 +641,8 @@ class Item(WebsiteGenerator):
 
 		if self.route:
 			invalidate_cache_for_item(self)
-			clear_cache(self.route)
+			pass
+			# clear_cache(self.route)
 
 		frappe.db.set_value("Item", new_name, "item_code", new_name)
 
