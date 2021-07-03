@@ -40,7 +40,7 @@
    "hidden": 1,
    "in_list_view": 1,
    "label": "Student Group",
-   "options": "Student Group"
+   "options": "Student Batch"
   },
   {
    "fieldname": "course_schedule",
@@ -86,7 +86,7 @@
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-06-15 19:47:08.790751",
+ "modified": "2021-06-27 15:52:10.873870",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Attendance Tool",
@@ -102,6 +102,16 @@
    "create": 1,
    "read": 1,
    "role": "Academics User",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Administrator",
+   "share": 1,
    "write": 1
   }
  ],

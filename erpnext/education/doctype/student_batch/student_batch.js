@@ -1,6 +1,6 @@
 cur_frm.add_fetch('student', 'title', 'student_name');
 
-frappe.ui.form.on('Student Group', {
+frappe.ui.form.on('Student Batch', {
 	onload: function(frm) {
 		frm.set_query('academic_term', function() {
 			return {
@@ -35,7 +35,7 @@ frappe.ui.form.on('Student Group', {
 				frappe.call({
 					method: 'erpnext.education.api.update_email_group',
 					args: {
-						'doctype': 'Student Group',
+						'doctype': 'Student Batch',
 						'name': frm.doc.name
 					}
 				});
@@ -43,7 +43,7 @@ frappe.ui.form.on('Student Group', {
 
 			frm.add_custom_button(__('Student Attendance Tool'), function() {
 				frappe.route_options = {
-					based_on: 'Student Group',
+					based_on: 'Student Batch',
 					student_group: frm.doc.name
 				}
 				frappe.set_route('Form', 'Student Attendance Tool', 'Student Attendance Tool');
@@ -116,7 +116,7 @@ frappe.ui.form.on('Student Group', {
 							refresh_field('students');
 							frm.save();
 						} else {
-							frappe.msgprint(__('Student Group is already updated.'))
+							frappe.msgprint(__('Student Batch is already updated.'))
 						}
 					}
 				})
@@ -124,7 +124,7 @@ frappe.ui.form.on('Student Group', {
 	}
 });
 
-frappe.ui.form.on('Student Group Instructor', {
+frappe.ui.form.on('Student Batch Instructor', {
 	instructors_add: function(frm){
 		frm.fields_dict['instructors'].grid.get_field('instructor').get_query = function(doc){
 			let instructor_list = [];

@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_import": 1,
- "autoname": "format:{student_group} {schedule_date}{from_time} {to_time}",
+ "autoname": "format:{student_group}_{schedule_date}_{from_time} _{to_time}",
  "creation": "2015-09-09 16:34:04.960369",
  "doctype": "DocType",
  "document_type": "Document",
@@ -29,7 +29,7 @@
    "in_global_search": 1,
    "in_standard_filter": 1,
    "label": "Student Group",
-   "options": "Student Group",
+   "options": "Student Batch",
    "reqd": 1
   },
   {
@@ -118,7 +118,7 @@
   }
  ],
  "links": [],
- "modified": "2021-06-12 22:45:45.288225",
+ "modified": "2021-07-03 12:43:50.557845",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Schedule Subject Lecture",

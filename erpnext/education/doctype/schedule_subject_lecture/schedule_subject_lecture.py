@@ -19,10 +19,10 @@ class ScheduleSubjectLecture(Document):
 		"""Set document Title"""
 		self.title = self.course + " by " + (self.instructor_name if self.instructor_name else self.instructor)
 	
-	def validate_course(self):
-		group_based_on, course = frappe.db.get_value("Student Group", self.student_group, ["group_based_on", "course"])
-		if group_based_on == "Course":
-			self.course = course
+	# def validate_course(self):
+	# 	group_based_on, course = frappe.db.get_value("Student Batch", self.student_group, ["group_based_on", "course"])
+	# 	if group_based_on == "Course":
+	# 		self.course = course
 
 	def validate_date(self):
 		"""Validates if from_time is greater than to_time"""
@@ -30,33 +30,33 @@ class ScheduleSubjectLecture(Document):
 			frappe.throw(_("From Time cannot be greater than To Time."))
 	
 	def validate_overlap(self):
-		"""Validates overlap for Student Group, Instructor, Room"""
+		"""Validates overlap for Student Batch, Instructor, Room"""
 		
 		from erpnext.education.utils import validate_overlap_for
 
 		#Validate overlapping Schedule Subject Lectures.
-		if self.student_group:
-			validate_overlap_for(self, "Schedule Subject Lecture", "student_group")
+		# if self.student_group:
+		validate_overlap_for(self, "Schedule Subject Lecture", "student_group")
 		
 		validate_overlap_for(self, "Schedule Subject Lecture", "instructor")
-		validate_overlap_for(self, "Schedule Subject Lecture", "room")
+		# validate_overlap_for(self, "Schedule Subject Lecture", "room")
 
 		#validate overlapping assessment schedules.
-		if self.student_group:
-			validate_overlap_for(self, "Assessment Plan", "student_group")
+		# if self.student_group:
+		# 	validate_overlap_for(self, "Assessment Plan", "student_group")
 		
-		validate_overlap_for(self, "Assessment Plan", "room")
-		validate_overlap_for(self, "Assessment Plan", "supervisor", self.instructor)
+		# validate_overlap_for(self, "Assessment Plan", "room")
+		# validate_overlap_for(self, "Assessment Plan", "supervisor", self.instructor)
 
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
 def get_subjects(doctype, txt, searchfield, start, page_len, filters):
-	student_group_doc = frappe.get_doc('Student Group',filters['group_name'])
+	student_group_doc = frappe.get_doc('Student Batch',filters['group_name'])
 	if student_group_doc.program_and_stream:
 		subject_list = frappe.db.sql("""
 			SELECT s.name, s.subject_name 
     		 FROM 
-    			`tabStudent Group` as sg 
+    			`tabStudent Batch` as sg 
     		JOIN 
 				`tabProgram Stream Semester Wise Syllabus` as ps
      			ON ps.program_and_stream = sg.program_and_stream
@@ -85,7 +85,7 @@ def get_subjects(doctype, txt, searchfield, start, page_len, filters):
 			'groupname' : filters['group_name']
 		})
 	else:
-		frappe.throw('Please Select Student Group')
+		frappe.throw('Please Select Student Batch')
 	
 	return subject_list
 

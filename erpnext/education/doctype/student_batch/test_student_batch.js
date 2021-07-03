@@ -1,7 +1,7 @@
 // Testing Student Module in Education
 QUnit.module('education');
 
-QUnit.test('Test: Student Group', function(assert){
+QUnit.test('Test: Student Batch', function(assert){
 	assert.expect(2);
 	let done = assert.async();
 	let group_based_on = ["test-batch-wise-group", "test-course-wise-group"];
@@ -10,7 +10,7 @@ QUnit.test('Test: Student Group', function(assert){
 	frappe.run_serially([
 		// Creating a Batch and Course based group
 		() => {
-			return frappe.tests.make('Student Group', [
+			return frappe.tests.make('Student Batch', [
 				{academic_year: '2016-17'},
 				{academic_term: '2016-17 (Semester 1)'},
 				{program: "Standard Test"},
@@ -21,7 +21,7 @@ QUnit.test('Test: Student Group', function(assert){
 			]);
 		},
 		() => {
-			return frappe.tests.make('Student Group', [
+			return frappe.tests.make('Student Batch', [
 				{academic_year: '2016-17'},
 				{academic_term: '2016-17 (Semester 1)'},
 				{program: "Standard Test"},
@@ -39,7 +39,7 @@ QUnit.test('Test: Student Group', function(assert){
 			group_based_on.forEach(index => {
 				tasks.push(
 					() => frappe.timeout(0.5),
-					() => frappe.set_route("Form", ('Student Group/' + index)),
+					() => frappe.set_route("Form", ('Student Batch/' + index)),
 					() => frappe.timeout(0.5),
 					() => frappe.tests.click_button('Get Students'),
 					() => frappe.timeout(1),

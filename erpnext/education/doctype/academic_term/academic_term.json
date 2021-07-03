@@ -55,12 +55,34 @@
   }
  ],
  "links": [],
- "modified": "2021-06-18 18:48:34.835829",
+ "modified": "2021-06-27 15:58:03.073160",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Academic Term",
  "owner": "Administrator",
  "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academics User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
   {
    "create": 1,
    "delete": 1,
@@ -69,7 +91,7 @@
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "Academics User",
+   "role": "Administrator",
    "share": 1,
    "write": 1
   }

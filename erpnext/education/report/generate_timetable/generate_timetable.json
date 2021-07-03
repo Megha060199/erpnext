@@ -12,7 +12,7 @@
    "fieldtype": "Link",
    "label": "timetable_for",
    "mandatory": 1,
-   "options": "Student Group",
+   "options": "Student Batch",
    "wildcard_filter": 0
   },
   {
@@ -33,7 +33,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "json": "{}",
- "modified": "2021-06-24 13:48:01.910117",
+ "modified": "2021-07-03 18:06:39.097912",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Generate TimeTable",
