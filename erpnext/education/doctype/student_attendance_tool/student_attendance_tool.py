@@ -32,5 +32,4 @@ def get_student_attendance_records(based_on, date=None, student_group=None, cour
 		for student in student_list:
 			if student.student == attendance.student:
 				student.status = attendance.status	
-	print(student_list,'student-list')
 	return student_list

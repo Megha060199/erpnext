@@ -8,7 +8,6 @@
  "field_order": [
   "student_group",
   "course",
-  "program",
   "column_break_3",
   "academic_year",
   "academic_term",
@@ -19,11 +18,12 @@
   "room",
   "section_break_7",
   "from_time",
-  "course_start_date",
-  "day",
+  "to_time",
+  "from_date",
+  "to_date",
+  "repeats_every",
   "reschedule",
   "column_break_15",
-  "to_time",
   "course_end_date"
  ],
  "fields": [
@@ -39,16 +39,9 @@
    "fieldname": "course",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Course",
-   "options": "Course",
+   "label": "Subject",
+   "options": "Subject",
    "reqd": 1
-  },
-  {
-   "fieldname": "program",
-   "fieldtype": "Link",
-   "label": "Program",
-   "options": "Program",
-   "read_only": 1
   },
   {
    "fieldname": "column_break_3",
@@ -57,6 +50,7 @@
   {
    "fieldname": "academic_year",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Academic Year",
    "options": "Academic Year",
    "read_only": 1
@@ -64,6 +58,7 @@
   {
    "fieldname": "academic_term",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Academic Term",
    "options": "Academic Term",
    "read_only": 1
@@ -94,10 +89,9 @@
   {
    "fieldname": "room",
    "fieldtype": "Link",
-   "in_list_view": 1,
+   "hidden": 1,
    "label": "Room",
-   "options": "Room",
-   "reqd": 1
+   "options": "Room"
   },
   {
    "fieldname": "section_break_7",
@@ -110,22 +104,10 @@
    "reqd": 1
   },
   {
-   "fieldname": "course_start_date",
-   "fieldtype": "Date",
-   "label": "Course Start Date",
-   "reqd": 1
-  },
-  {
-   "fieldname": "day",
-   "fieldtype": "Select",
-   "label": "Day",
-   "options": "\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday",
-   "reqd": 1
-  },
-  {
    "default": "0",
    "fieldname": "reschedule",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Reschedule"
   },
   {
@@ -141,17 +123,36 @@
   {
    "fieldname": "course_end_date",
    "fieldtype": "Date",
-   "label": "Course End Date",
+   "hidden": 1,
+   "label": "Course End Date"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "repeats_every",
+   "fieldtype": "Select",
+   "label": "Repeats Every",
+   "options": "Monday,Wednesday,Friday\nTuesday,Thursday,Saturday\nEveryday\nMonday\nTuesday\nWednesday\nThursday\nFriday",
+   "reqd": 1
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
    "reqd": 1
   }
  ],
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-06-27 15:52:05.597438",
+ "modified": "2021-06-28 14:11:23.111044",
  "modified_by": "Administrator",
  "module": "Education",
- "name": "Course Scheduling Tool",
+ "name": "Lecture Scheduling Tool",
  "owner": "Administrator",
  "permissions": [
   {
