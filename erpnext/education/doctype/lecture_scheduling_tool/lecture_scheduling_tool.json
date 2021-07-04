@@ -149,7 +149,7 @@
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-06-28 14:11:23.111044",
+ "modified": "2021-07-03 18:51:08.984272",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Lecture Scheduling Tool",
@@ -159,6 +159,16 @@
    "create": 1,
    "read": 1,
    "role": "Academics User",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Administrator",
+   "share": 1,
    "write": 1
   }
  ],
