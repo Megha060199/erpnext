@@ -10,6 +10,7 @@
   "student_group",
   "instructor",
   "instructor_name",
+  "lecture_conducted",
   "column_break_2",
   "naming_series",
   "course",
@@ -115,10 +116,16 @@
    "fieldtype": "Data",
    "hidden": 1,
    "label": "Title"
+  },
+  {
+   "default": "0",
+   "fieldname": "lecture_conducted",
+   "fieldtype": "Check",
+   "label": "Lecture Conducted"
   }
  ],
  "links": [],
- "modified": "2021-07-03 12:43:50.557845",
+ "modified": "2021-07-03 19:19:19.951514",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Schedule Subject Lecture",
@@ -126,7 +133,6 @@
  "permissions": [
   {
    "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
@@ -135,6 +141,27 @@
    "role": "Academics User",
    "share": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Instructor",
+   "share": 1
   }
  ],
  "restrict_to_domain": "Education",
