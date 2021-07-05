@@ -59,6 +59,39 @@ class LectureSchedulingTool(Document):
 						frappe.throw('Cannot Create Lecture')
 			start_date += delta
 
+
+		# group_based_on, course = frappe.db.get_value(
+		# 	"Student Group", self.student_group, ["group_based_on", "course"])
+
+		# if group_based_on == "Course":
+		# 	self.course = course
+
+		# if self.reschedule:
+		# 	rescheduled, reschedule_errors = self.delete_course_schedule(
+		# 		rescheduled, reschedule_errors)
+
+		# date = self.course_start_date
+		# while date < self.course_end_date:
+		# 	if self.day == calendar.day_name[getdate(date).weekday()]:
+		# 		course_schedule = self.make_course_schedule(date)
+		# 		try:
+		# 			print('pass')
+		# 			course_schedule.save()
+		# 		except OverlapError:
+		# 			print('fail')
+		# 			course_schedules_errors.append(date)
+		# 		else:
+		# 			course_schedules.append(course_schedule)
+
+		# 		date = add_days(date, 7)
+		# 	else:
+		# 		date = add_days(date, 1)
+		# return dict(
+		# 	course_schedules=course_schedules,
+		# 	course_schedules_errors=course_schedules_errors,
+		# 	rescheduled=rescheduled,
+		# 	reschedule_errors=reschedule_errors
+		# )
 	def create_lecture_doc(self,start_date):
 		lecture = frappe.new_doc("Schedule Subject Lecture")
 		lecture.student_group = self.student_group
