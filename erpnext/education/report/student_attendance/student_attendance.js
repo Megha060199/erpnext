@@ -8,14 +8,12 @@ frappe.query_reports["Student Attendance"] = {
 			"fieldname": "from_date",
 			"label": __("From Date"),
 			"fieldtype": "Date",
-			"default": frappe.datetime.get_today(),
 			"reqd": 1
 		},
 		{
 			"fieldname": "to_date",
 			"label": __("to_date"),
 			"fieldtype": "Date",
-			"default": frappe.datetime.get_today(),
 			"reqd": 1
 		},
 		{
