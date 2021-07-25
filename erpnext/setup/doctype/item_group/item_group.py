@@ -8,13 +8,11 @@ from frappe import _
 from frappe.utils import nowdate, cint, cstr
 from frappe.utils.nestedset import NestedSet
 from frappe.website.website_generator import WebsiteGenerator
-#from frappe.website.utils import clear_cache
-#from frappe.website.render import clear_cache
-# from frappe.website.utils import clear_cache
+from frappe.website.utils import clear_cache
 from frappe.website.doctype.website_slideshow.website_slideshow import get_slideshow
 from erpnext.shopping_cart.product_info import set_product_info_for_website
 from erpnext.utilities.product import get_qty_in_stock
-from six.moves.urllib.parse import quote
+# from six.moves.urllib.parse import quote
 from erpnext.shopping_cart.product_query import ProductQuery
 from erpnext.shopping_cart.filters import ProductFiltersBuilder
 
@@ -272,8 +270,7 @@ def invalidate_cache_for(doc, item_group=None):
 	for d in get_parent_item_groups(item_group):
 		item_group_name = frappe.db.get_value("Item Group", d.get('name'))
 		if item_group_name:
-			pass
-			# clear_cache(frappe.db.get_value('Item Group', item_group_name, 'route'))
+			clear_cache(frappe.db.get_value('Item Group', item_group_name, 'route'))
 
 def get_item_group_defaults(item, company):
 	item = frappe.get_cached_doc("Item", item)
