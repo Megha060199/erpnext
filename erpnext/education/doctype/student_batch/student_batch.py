@@ -9,21 +9,19 @@ from frappe import _
 from erpnext.education.utils import validate_duplicate_student
 from frappe.utils import cint
 
-class StudentGroup(Document):
+class StudentBatch(Document):
 	def validate(self):
 		self.validate_mandatory_fields()
 		self.validate_strength()
-		self.validate_students()
-		self.validate_and_set_child_table_fields()
-		validate_duplicate_student(self.students)
+		# self.validate_students()
+		# self.validate_and_set_child_table_fields()
+		# validate_duplicate_student(self.students)
 
 	def validate_mandatory_fields(self):
-		if self.group_based_on == "Course" and not self.course:
-			frappe.throw(_("Please select Course"))
-		if self.group_based_on == "Course" and (not self.program and self.batch):
-			frappe.throw(_("Please select Program"))
-		if self.group_based_on == "Batch" and not self.program:
-			frappe.throw(_("Please select Program"))
+		if not self.academic_term:
+			frappe.throw(_("Please select Academic Term"))
+		if self.group_based_on == "Program & Stream" and not self.program_and_stream:
+			frappe.throw(_("Please select Program And Course Field"))
 
 	def validate_strength(self):
 		if self.max_strength and len(self.students) > self.max_strength:
@@ -60,21 +58,66 @@ class StudentGroup(Document):
 				roll_no_list.append(d.group_roll_number)
 
 @frappe.whitelist()
-def get_students(academic_year, group_based_on, academic_term=None, program=None, batch=None, student_category=None, course=None):
-	enrolled_students = get_program_enrollment(academic_year, academic_term, program, batch, student_category, course)
+def get_students(academic_term, group_based_on, program_and_stream=None,campus=None):
+	students_already_alloted_batch = frappe.get_all('Student Group Student',fields=['student','student_phone_number','student_email_id'])
+	students_not_given_batch = []
+	if group_based_on == 'Program & Stream' and program_and_stream:
+		student_list = frappe.db.sql("""
+		Select st.title as student,
+		st.email_id as student_email_id,
+		st.mobile_number as student_phone_number
+		FROM 
+		`tabEnroll Student` as st
+		WHERE 
+		st.enrolled_course = %(program_and_stream)s
+		AND st.status = 'Active'
+		AND st.current_academic_term = %(academic_term)s
+		AND st.campus = %(campus)s
+		""",{'program_and_stream':program_and_stream,'academic_term':academic_term,'campus':campus},as_dict=True)
 
-	if enrolled_students:
-		student_list = []
-		for s in enrolled_students:
-			if frappe.db.get_value("Student", s.student, "enabled"):
-				s.update({"active": 1})
-			else:
-				s.update({"active": 0})
-			student_list.append(s)
-		return student_list
-	else:
-		frappe.msgprint(_("No students found"))
-		return []
+
+	# if group_based_on == 'Program' and program :
+	# 	student_list = frappe.db.sql("""
+
+	# 	Select st.title as student,
+	# 	st.email_id as student_email_id,
+	# 	st.mobile_number as student_phone_number
+		
+	# 	FROM 
+	# 	`tabEnroll Student` as st
+	# 	JOIN `tabProgram Stream` as psb
+	# 	on psb.program_stream_name = st.enrolled_course
+	# 	JOIN `tabPograms` as p
+	# 	ON p.name = psb.program
+	# 	WHERE 
+	# 	p.name = %(program)s
+	# 	AND st.status = 'Active'
+	# 	AND st.current_academic_term = %(academic_term)s
+	# 	""",{'program':program,'academic_term':academic_term},as_dict=True)
+
+	# if group_based_on == 'Stream' and stream :
+	# 	student_list = frappe.db.sql("""
+	# 	Select st.title as student,
+	# 	st.email_id as student_email_id,
+	# 	st.mobile_number as student_phone_number
+		
+	# 	FROM 
+	# 	`tabEnroll Student` as st
+	# 	JOIN `tabProgram Stream` as psb
+	# 	on psb.program_stream_name = st.enrolled_course
+	# 	JOIN `tabStream` as s
+	# 	ON s.name = psb.stream
+	# 	WHERE
+	# 	s.name = %(stream)s
+	# 	AND st.status = 'Active'
+	# 	AND st.current_academic_term = %(academic_term)s
+	# 	""",{'stream':stream,'academic_term':academic_term},as_dict=True)
+	for st in student_list:
+		if st not in students_already_alloted_batch:
+			students_not_given_batch.append(st)
+	if len(students_not_given_batch)==0:
+		frappe.throw('No students or all students already alloted a batch')
+	return students_not_given_batch
 
 def get_program_enrollment(academic_year, academic_term=None, program=None, batch=None, student_category=None, course=None):
 	
@@ -111,9 +154,9 @@ def fetch_students(doctype, txt, searchfield, start, page_len, filters):
 	if filters.get("group_based_on") != "Activity":
 		enrolled_students = get_program_enrollment(filters.get('academic_year'), filters.get('academic_term'),
 			filters.get('program'), filters.get('batch'), filters.get('student_category'))
-		student_group_student = frappe.db.sql_list('''select student from `tabStudent Group Student` where parent=%s''',
-			(filters.get('student_group')))
-		students = ([d.student for d in enrolled_students if d.student not in student_group_student]
+		student_batch_student = frappe.db.sql_list('''select student from `tabStudent Batch Student` where parent=%s''',
+			(filters.get('student_batch')))
+		students = ([d.student for d in enrolled_students if d.student not in student_batch_student]
 			if enrolled_students else [""]) or [""]
 		return frappe.db.sql("""select name, title from tabStudent
 			where name in ({0}) and (`{1}` LIKE %s or title LIKE %s)

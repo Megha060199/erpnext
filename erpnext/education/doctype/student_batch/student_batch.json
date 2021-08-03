@@ -10,6 +10,8 @@
   "academic_year",
   "group_based_on",
   "student_group_name",
+  "program_and_stream",
+  "campus",
   "max_strength",
   "column_break_3",
   "academic_term",
@@ -28,6 +30,7 @@
   {
    "fieldname": "academic_year",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_standard_filter": 1,
    "label": "Academic Year",
    "options": "Academic Year",
@@ -38,7 +41,8 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Group Based on",
-   "options": "\nBatch\nCourse\nActivity",
+   "options": "Program & Stream",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -64,11 +68,13 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Academic Term",
-   "options": "Academic Term"
+   "options": "Academic Term",
+   "reqd": 1
   },
   {
    "fieldname": "program",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_global_search": 1,
    "label": "Program",
    "options": "Program"
@@ -76,6 +82,7 @@
   {
    "fieldname": "batch",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_global_search": 1,
    "label": "Batch",
    "options": "Student Batch Name"
@@ -127,14 +134,28 @@
   {
    "fieldname": "student_category",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Student Category",
    "options": "Student Category"
+  },
+  {
+   "fieldname": "program_and_stream",
+   "fieldtype": "Link",
+   "label": "Program and Stream",
+   "options": "Program Stream"
+  },
+  {
+   "fieldname": "campus",
+   "fieldtype": "Select",
+   "label": "Campus",
+   "options": "Deccan\nKothrud",
+   "reqd": 1
   }
  ],
- "modified": "2019-04-26 10:52:57.303951",
+ "modified": "2021-08-03 16:03:51.718764",
  "modified_by": "Administrator",
  "module": "Education",
- "name": "Student Group",
+ "name": "Student Batch",
  "owner": "Administrator",
  "permissions": [
   {
