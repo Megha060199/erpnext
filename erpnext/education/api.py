@@ -88,22 +88,22 @@ def make_attendance_records(student, student_name, status, course_schedule=None,
 	:param course_schedule: Course Schedule.
 	:param status: Status (Present/Absent)
 	"""
-	student_attendance = frappe.get_doc({
-		"doctype": "Student Attendance",
+	student_attendance_data = {
 		"student": student,
 		"course_schedule": course_schedule,
 		"student_group": student_group,
-		"date": date
-	})
-	if not student_attendance:
-		student_attendance = frappe.new_doc("Student Attendance")
-	student_attendance.student = student
-	student_attendance.student_name = student_name
-	student_attendance.course_schedule = course_schedule
-	student_attendance.student_group = student_group
-	student_attendance.date = date
-	student_attendance.status = status
-	student_attendance.save()
+	}
+	student_attendance = frappe.db.get_value('Student Attendance',student_attendance_data)
+	if  student_attendance:
+		student_attendance_doc = frappe.get_doc('Student Attendance',student_attendance)
+		student_attendance_doc.status = status
+		student_attendance_doc.save()
+	else:
+		student_attendance_data.update({'doctype':'Student Attendance','status':status})
+		student_attendance_doc = frappe.get_doc(student_attendance_data)
+		student_attendance_doc.save()
+	
+		
 
 
 @frappe.whitelist()
