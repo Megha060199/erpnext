@@ -152,15 +152,17 @@
    "reqd": 1
   }
  ],
- "modified": "2021-08-03 16:03:51.718764",
+ "modified": "2021-08-09 12:09:22.611305",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Student Batch",
  "owner": "Administrator",
  "permissions": [
   {
+   "create": 1,
    "read": 1,
-   "role": "Instructor"
+   "role": "Instructor",
+   "write": 1
   },
   {
    "create": 1,
@@ -171,6 +173,39 @@
    "read": 1,
    "report": 1,
    "role": "Academics User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "admin",
+   "share": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
    "share": 1,
    "write": 1
   }
